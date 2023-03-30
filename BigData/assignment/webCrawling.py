@@ -55,7 +55,7 @@ def main():
   result = []
   wCrawling(result)
   Wcrawling_tbl = pd.DataFrame(result, columns=('store', 'sido', 'gungu', 'address'))
-  Wcrawling_tbl.to_csv('C:/Users/raven/git/course_BigData01/ihBigData/Data/KyoChon.csv', encoding='cp949', mode='w', index=True)
+  Wcrawling_tbl.to_csv('C:/Users/raven/git/course_BigData01/BigData/Data/KyoChon.csv', encoding='cp949', mode='w', index=True)
   del result[:]
 
 if __name__ == '__main__':

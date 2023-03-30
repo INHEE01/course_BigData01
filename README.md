@@ -5,6 +5,6 @@
   
 <2023. 3. 30>  
 과제1. 웹 크롤링  
-inBigData > assignment > webCrawling.py : 교촌치킨 국내 전 매장에 대한 정보를 가져오는 파이썬 코드  
-inBigData > Data > KyoChon.csv : 교촌치킨 국내 전 매장에 대한 정보  
+BigData > assignment > webCrawling.py : 교촌치킨 국내 전 매장에 대한 정보를 가져오는 파이썬 코드  
+BigData > Data > KyoChon.csv : 교촌치킨 국내 전 매장에 대한 정보  
 
