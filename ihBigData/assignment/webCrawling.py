@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import urllib.request
 import pandas as pd
 import time
+import re
 
 # - 각 매장의 [매장이름, 시/도, 군/구, 주소] 네 가지 정보 가져오기
 # Example URL : https://www.kyochon.com/shop/domestic.asp?sido1=1&sido2=1&txtsearch=
@@ -26,17 +27,26 @@ def wCrawling(result):
       html = urllib.request.urlopen(url)
       SoupUrl = BeautifulSoup(html, 'html.parser')
       tag_name = SoupUrl.find('ul', attrs={'class':'list'}) # ul class="list" 를 찾는다.
-      # print(tag_name) # tag_name 잘 설정되었는지 확인
  
       for store in tag_name.find_all('li'):
-        # print(store)
         if len(store) <= 3:
           break
 
         store_name = store.find('strong').get_text()
         store_sido = store.find('em').get_text().split(' ')[0]
         store_gungu = store.find('em').get_text().split(' ')[1]
-        store_addr = store.find('em').get_text()
+        store_addr1 = store.find('em').get_text()
+        address_regex = re.compile(r'\(.+\)')
+        match_addr = address_regex.search(store_addr1)
+        # 정규 표현식을 통한 주소 추출
+        # 도로명주소가 존재한다면 도로명주소를 가져오고, 도로명주소가 존재하지 않는다면 그냥 주소를 가져와서 store_addr 변수에 저장.
+        if match_addr:
+          store_addr = match_addr.group().strip('()')
+        else:
+          start_index = store_addr1.index("(")
+          end_index = store_addr1.index(")")
+          addr = store_addr1[:start_index] + store_addr1[end_index+1:]
+          store_addr = addr.strip()
 
         result.append([store_name] + [store_sido] + [store_gungu] + [store_addr])
         
@@ -45,7 +55,7 @@ def main():
   result = []
   wCrawling(result)
   Wcrawling_tbl = pd.DataFrame(result, columns=('store', 'sido', 'gungu', 'address'))
-  Wcrawling_tbl.to_csv('C:/Users/raven/git/ihBigData/Data/KyoChon3.csv', encoding='cp949', mode='w', index=True)
+  Wcrawling_tbl.to_csv('C:/Users/raven/git/course_BigData01/ihBigData/Data/KyoChon.csv', encoding='cp949', mode='w', index=True)
   del result[:]
 
 if __name__ == '__main__':
